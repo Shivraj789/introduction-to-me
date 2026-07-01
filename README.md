@@ -22,6 +22,7 @@ This project showcases my work, skills, and passion for building modern web appl
 * Skills and experience section
 * Contact information
 * Optimized performance
+* only for pc
 
 ## 🛠️ Tech Stack
 
