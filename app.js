@@ -19,6 +19,11 @@ app.get('/roadmap',(req, res)=>{
     res.render( "roadmap")
 })
 
+app.get('/projects',(req, res)=>{
+    res.render("project")
+})
+
+
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 
