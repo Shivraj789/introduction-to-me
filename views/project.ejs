@@ -13,16 +13,16 @@
     <!-- Background -->
     <div class="fixed inset-0 -z-10 overflow-hidden">
 
-        <div class="absolute -top-52 -left-52 w-[700px] h-[700px] rounded-full bg-[#B9F6CA] opacity-70 blur-[180px]"></div>
+        <div class="absolute -top-24 -left-24 sm:-top-52 sm:-left-52 w-[350px] h-[350px] sm:w-[700px] sm:h-[700px] rounded-full bg-[#B9F6CA] opacity-70 blur-[90px] sm:blur-[180px]"></div>
 
-        <div class="absolute -bottom-60 -right-60 w-[850px] h-[850px] rounded-full bg-[#8EE8FF] opacity-70 blur-[180px]"></div>
+        <div class="absolute -bottom-28 -right-28 sm:-bottom-60 sm:-right-60 w-[400px] h-[400px] sm:w-[850px] sm:h-[850px] rounded-full bg-[#8EE8FF] opacity-70 blur-[90px] sm:blur-[180px]"></div>
 
     </div>
     
 
 
     <!-- Heading -->
-    <section class="py-20">
+    <section class="py-10 sm:py-20 px-4">
 
         <div class="text-center mb-28">
             <audio id="arrowSound" src="image/dragon-studio-mouse-click-sound-376877.mp3"></audio>
@@ -30,12 +30,12 @@
 <button
     type="button"
     onclick="playSoundAndGo()"
-    class="ml-330 cursor-pointer hover:scale-110 transition"
+    class="cursor-pointer hover:scale-110 transition"
 >
     <img
         src="image/icons8-curly-arrow-50.png"
         alt="Arrow"
-        class="w-8 h-8"
+        class="w-6 h-6 sm:w-8 sm:h-8"
     >
 </button>
 
@@ -57,7 +57,7 @@ function playSoundAndGo() {
 
 <button
     id="musicBtn"
-    class="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-black text-white shadow-xl transition hover:scale-110 hover:bg-blue-600"
+    class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-black text-white shadow-xl transition hover:scale-110 hover:bg-blue-600"
 >
     <i data-lucide="pause"></i>
 </button>
@@ -88,9 +88,13 @@ function playSoundAndGo() {
 
         lucide.createIcons();
     });
-</script></script>            <h1 class="text-6xl font-black">My projects</h1>
-            
-    
+</script>
+
+            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-center">My projects</h1>
+
+        </div>
+
+    </section>
 
 </body>
 </html>
