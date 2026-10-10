@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>My Projects</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  /* ---------- iOS theme tokens ---------- */
+  :root {
+    --ios-bg: #F2F2F7;
+    --ios-label: #000000;
+    --ios-secondary: rgba(60, 60, 67, 0.6);
+    --ios-blue: #007AFF;
+    --ios-glass: rgba(255, 255, 255, 0.72);
+    --ios-glass-border: rgba(255, 255, 255, 0.6);
+    --ios-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "Segoe UI", Roboto, Arial, sans-serif;
+  }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: var(--ios-font);
+    color: var(--ios-label);
+    -webkit-font-smoothing: antialiased;
+    background: var(--ios-bg);
+  }
+
+  /* ---------- Page header (iOS large title) ---------- */
+  .ios-header { text-align: center; padding-top: 56px; }
+
+  .ios-title {
+    font-size: clamp(2.2rem, 6vw, 3.4rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+
+  .ios-subtitle {
+    margin-top: 8px;
+    font-size: 17px;
+    color: var(--ios-secondary);
+  }
+
+  .ios-back-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    background: var(--ios-glass);
+    border: 1px solid var(--ios-glass-border);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    margin-bottom: 18px;
+    transition: transform 150ms ease;
+  }
+  .ios-back-btn:active { transform: scale(0.92); }
+
+  /* ---------- 3D carousel ---------- */
+  .wrapper {
+    width: 100%;
+    height: min(72vh, 560px);
+    position: relative;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .inner {
+    --w: 190px;
+    --h: 270px;
+    --translateZ: 300px;           /* set from JS based on number of cards */
+    --rotateX: -8deg;
+    --perspective: 1200px;
+    position: absolute;
+    width: var(--w);
+    height: var(--h);
+    top: calc(50% - (var(--h) / 2));
+    left: calc(50% - (var(--w) / 2));
+    z-index: 2;
+    transform-style: preserve-3d;
+    transform: perspective(var(--perspective));
+    animation: rotating 30s linear infinite;
+  }
+
+  /* Pause rotation so a card can be tapped/clicked */
+  .inner:hover,
+  .inner:focus-within,
+  .inner:active { animation-play-state: paused; }
+
+  @keyframes rotating {
+    from { transform: perspective(var(--perspective)) rotateX(var(--rotateX)) rotateY(0); }
+    to   { transform: perspective(var(--perspective)) rotateX(var(--rotateX)) rotateY(1turn); }
+  }
+
+  .card {
+    position: absolute;
+    inset: 0;
+    display: block;
+    border-radius: 22px;
+    overflow: hidden;
+    border: 2px solid rgba(var(--color-card), 0.9);
+    background: rgba(var(--color-card), 0.25);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: rotateY(calc((360deg / var(--quantity)) * var(--index))) translateZ(var(--translateZ));
+    transition: box-shadow 200ms ease;
+  }
+
+  .card:hover,
+  .card:focus-visible {
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.28);
+    outline: none;
+  }
+  .card:focus-visible { border-color: var(--ios-blue); }
+
+  /* Project image */
+  .card .img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    background: radial-gradient(
+      circle,
+      rgba(var(--color-card), 0.2) 0%,
+      rgba(var(--color-card), 0.6) 80%,
+      rgba(var(--color-card), 0.9) 100%
+    );
+  }
+
+  /* iOS frosted-glass info sheet */
+  .card-info {
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    padding: 10px 12px;
+    text-align: left;
+    background: var(--ios-glass);
+    border: 1px solid var(--ios-glass-border);
+    border-radius: 16px;
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+  }
+
+  .card-badge {
+    display: inline-block;
+    padding: 2px 9px;
+    margin-bottom: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ios-blue);
+    background: rgba(0, 122, 255, 0.12);
+    border-radius: 999px;
+  }
+
+  .card-title {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    color: var(--ios-label);
+  }
+
+  .card-desc {
+    margin-top: 3px;
+    font-size: 12px;
+    line-height: 1.3;
+    color: var(--ios-secondary);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-open {
+    margin-top: 8px;
+    display: inline-block;
+    padding: 4px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    background: var(--ios-blue);
+    border-radius: 999px;
+  }
+
+  .empty-state {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    color: var(--ios-secondary);
+  }
+
+  /* ---------- Floating controls (iOS glass buttons) ---------- */
+  .glass-fab {
+    position: fixed;
+    right: 24px;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 999px;
+    background: var(--ios-glass);
+    border: 1px solid var(--ios-glass-border);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.14);
+    color: var(--ios-label);
+    transition: transform 150ms ease;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .glass-fab:active { transform: scale(0.92); }
+
+  /* ---------- Mobile ---------- */
+  @media (max-width: 640px) {
+    .inner { --w: 150px; --h: 220px; }
+    .ios-header { padding-top: 40px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .inner { animation-duration: 120s; }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- Background (soft iOS-style color wash) -->
+<div class="fixed inset-0 -z-10 overflow-hidden">
+  <div class="absolute -top-52 -left-52 w-[700px] h-[700px] rounded-full bg-[#B9F6CA] opacity-60 blur-[180px]"></div>
+  <div class="absolute -bottom-60 -right-60 w-[850px] h-[850px] rounded-full bg-[#8EE8FF] opacity-60 blur-[180px]"></div>
+</div>
+
+<!-- Heading -->
+<section class="pb-10">
+  <div class="ios-header">
+
+    <!-- Back arrow button -->
+    <audio id="arrowSound" src="/image/dragon-studio-mouse-click-sound-376877.mp3"></audio>
+
+    <button
+      type="button"
+      onclick="playSoundAndGo()"
+      class="ios-back-btn cursor-pointer"
+      aria-label="Back to roadmap"
+    >
+      <img src="/image/icons8-curly-arrow-50.png" alt="Back" class="w-6 h-6">
+    </button>
+
+    <h1 class="ios-title">My Projects</h1>
+    <p class="ios-subtitle">Tap a card to open the project</p>
+  </div>
+
+  <!-- 3D rotating project carousel -->
+  <div class="wrapper">
+    <% if (projects1 && projects1.length) { %>
+      <%
+        // iOS system colors (R, G, B) cycled across the cards
+        const palette = [
+          "52, 199, 89", "10, 132, 255", "255, 159, 10", "255, 69, 58", "191, 90, 242",
+          "100, 210, 255", "255, 214, 10", "48, 209, 88", "255, 55, 95", "94, 92, 230"
+        ];
+      %>
+      <div class="inner" id="carousel" style="--quantity: <%= projects1.length %>;">
+        <% projects1.forEach(function(project1, i) { %>
+          <%
+            const link  = project1.link || project1.url || project1.liveLink || "#";
+            const image = project1.image || project1.img || project1.thumbnail || "/image/placeholder.png";
+          %>
+          <a
+            class="card"
+            href="<%= link %>"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open project: <%= project1.title %>"
+            style="--index: <%= i %>; --color-card: <%= palette[i % palette.length] %>;"
+          >
+            <img
+              class="img"
+              src="<%= image %>"
+              alt="<%= project1.title %>"
+              loading="lazy"
+              draggable="false"
+              onerror="this.removeAttribute('src')"
+            >
+
+            <div class="card-info">
+              <span class="card-badge"><%= project1.category || "Project" %></span>
+              <div class="card-title"><%= project1.title %></div>
+              <% if (project1.description) { %>
+                <div class="card-desc"><%= project1.description %></div>
+              <% } %>
+              <span class="card-open">Open</span>
+            </div>
+          </a>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <div class="empty-state">No projects yet.</div>
+    <% } %>
+  </div>
+</section>
+
+<!-- Background music -->
+<audio id="bgMusic" autoplay loop playsinline>
+  <source src="/image/ample1.mp3" type="audio/mpeg">
+</audio>
+
+<button id="musicBtn" class="glass-fab" style="bottom: 24px;" aria-label="Toggle music">
+  <i data-lucide="pause"></i>
+</button>
+
+<!-- Forward arrow -->
+<audio id="forwardSound" src="/image/dragon-studio-mouse-click-sound-376877.mp3"></audio>
+
+<button
+  type="button"
+  onclick="playForwardSoundAndGo()"
+  class="glass-fab cursor-pointer"
+  style="bottom: 88px;"
+  aria-label="Next page"
+>
+  <img src="/image/icons8-curly-arrow-50.png" alt="Forward" class="w-6 h-6 scale-x-[-1]">
+</button>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  lucide.createIcons();
+
+  // ---------- Size the 3D ring to fit however many projects there are ----------
+  (function layoutCarousel() {
+    const inner = document.getElementById("carousel");
+    if (!inner) return;
+
+    function apply() {
+      const cards = inner.querySelectorAll(".card").length;
+      const w = parseFloat(getComputedStyle(inner).getPropertyValue("--w")) || 190;
+      const n = Math.max(cards, 3);
+      // radius of a ring where neighbouring cards just touch, plus a gap
+      const radius = Math.max(w / 2 / Math.tan(Math.PI / n) + 28, 220);
+      inner.style.setProperty("--translateZ", radius + "px");
+    }
+
+    apply();
+    window.addEventListener("resize", apply);
+  })();
+
+  // Back arrow -> plays sound -> goes to /roadmap
+  function playSoundAndGo() {
+    const sound = document.getElementById("arrowSound");
+    sound.play().catch(() => {});
+    setTimeout(() => {
+      window.location.href = "/roadmap";
+    }, 300);
+  }
+
+  // Forward arrow -> plays sound -> goes to next page
+  function playForwardSoundAndGo() {
+    const sound = document.getElementById("forwardSound");
+    sound.play().catch(() => {});
+    setTimeout(() => {
+      window.location.href = "/404"; // change to /contact when that page exists
+    }, 300);
+  }
+
+  // Background music controls
+  const music = document.getElementById("bgMusic");
+  const btn = document.getElementById("musicBtn");
+  music.volume = 0.6;
+
+  // Handle browser autoplay policy gracefully
+  music.play().catch(err => {
+    console.log("Autoplay blocked by browser policy:", err);
+    btn.innerHTML = '<i data-lucide="play"></i>';
+    lucide.createIcons();
+  });
+
+  btn.addEventListener("click", () => {
+    if (music.paused) {
+      music.play();
+      btn.innerHTML = '<i data-lucide="pause"></i>';
+    } else {
+      music.pause();
+      btn.innerHTML = '<i data-lucide="play"></i>';
+    }
+    lucide.createIcons();
+  });
+</script>
+
+</body>
+</html>
